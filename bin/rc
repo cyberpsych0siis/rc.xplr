@@ -1,0 +1,15 @@
+#!/bin/sh
+
+while read -r FP < $NNN_FIFO;
+do
+  if [[ $FP == "Quit" ]];
+  then
+    # xplr sent Quit message
+    exec $RC_ONEXIT &
+  fi
+  # xplr sent new path
+  exec $RC_ONENTRY $FP &
+done
+
+exec $RC_ONEXIT &
+rm -rf $FIFO
